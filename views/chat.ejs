@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omegle Clone - Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+      #chat-box::-webkit-scrollbar{
+        width: 8px;
+        background: #bcbbbb;
+      }
+      #chat-box::-webkit-scrollbar-thumb{
+        width: 7px;
+        background: #929090;
+        border-radius: 5px;
+      }
+
+    </style>
+</head>
+
+
+<body class="bg-gray-100 text-white flex items-center justify-center relative">
+    <div class="w-screen max-w-screen-2xl mx-auto h-screen flex flex-col gap-4 bg-gray-800 rounded-lg shadow-md p-4 md:p-6">
+        <!-- Header Section -->
+        <div class="flex justify-between items-center w-full px-4 py-2 bg-gray-700 rounded-lg">
+          <h1 class="text-lg md:text-2xl font-bold text-white">Omegle Clone Chat</h1>
+          <div class="flex gap-2">
+            <button id="start-video-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 flex items-center gap-2 rounded transition duration-200">
+              <span class="hidden md:block">Start Video Chat</span>
+              <i class="ri-video-on-line text-xl"></i>
+            </button>
+            <button id="start-chat-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 flex items-center gap-2 rounded transition duration-200 hidden">
+              <span class="hidden md:block">Start Chat</span>
+              <i class="ri-wechat-2-fill text-xl"></i>
+            </button>
+          </div>
+        </div>
+      
+        <!-- Video Call Section -->
+        <div id="video-call-section" class="hidden flex flex-col w-full items-center bg-gray-700 rounded-lg p-4 mt-4">
+          <div class="flex flex-col md:flex-row gap-4 w-full ">
+            <video id="localVideo" class="bg-black rounded-lg w-full md:w-1/2 md:h-96 h-64  hidden" autoplay muted></video>
+            <video id="remoteVideo" class="bg-black rounded-lg w-full md:w-1/2 md:h-96 h-64 hidden" autoplay></video>
+          </div>
+          <button id="end-call-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-200 mt-4">End Call</button>
+        </div>
+      
+        <!-- Chat Section -->
+        <div id="chat-section" class="flex-grow flex flex-col gap-4 mt-4">
+          <div id="chat-box" class="h-60 md:h-80 overflow-y-auto bg-gray-700 p-4 rounded-lg flex flex-col gap-2">
+            <h4 class="waiting_text text-center text-gray-300">Waiting for someone to join soon!</h4>
+          </div>
+      
+          <form id="chatForm" class="flex gap-2">
+            <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off"
+              class="flex-grow p-2 bg-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg">
+            <input type="submit" value="Send"
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 transition rounded-lg duration-200">
+          </form>
+        </div>
+      
+        <!-- Incoming Call Notification -->
+        <div id="incoming-call" class="hidden fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center p-4">
+          <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center gap-3">
+            <h4 class="text-center text-gray-800">Incoming call...</h4>
+            <div class="flex gap-3">
+              <button id="accept-call-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-200">Accept</button>
+              <button id="decline-call-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-200">Decline</button>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Outgoing Call Notification -->
+        <div id="outgoing-call" class="hidden fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center p-4">
+          <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h4 class="text-gray-800">Ringing...</h4>
+          </div>
+        </div>
+      
+        <!-- Notification -->
+        <div id="notify" class="hidden fixed inset-x-0 top-1/4 bg-red-400 text-white text-center font-semibold py-2 px-4 rounded-md mx-auto w-48">
+          <p id="notify-text"></p>
+        </div>
+      </div>
+      
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+
+</html>
