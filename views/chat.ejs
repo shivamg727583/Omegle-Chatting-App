@@ -18,6 +18,27 @@
         background: #929090;
         border-radius: 5px;
       }
+.videoframe{
+  width: 100%;
+  height: 80vh;
+  position: relative;
+}
+
+.smallframe{
+  width: 130px;
+  height: 150px;
+  position: absolute;
+  z-index: 2;
+  bottom: 13%;
+  right: 4%;
+  border-radius: 30px;
+  border: none;
+}
+.largeframe{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
 
     </style>
 </head>
@@ -41,16 +62,22 @@
         </div>
       
         <!-- Video Call Section -->
-        <div id="video-call-section" class="hidden flex flex-col w-full items-center bg-gray-700 rounded-lg p-4 mt-4">
-          <div class="flex flex-col md:flex-row gap-4 w-full ">
-            <video id="localVideo" class="bg-black rounded-lg w-full md:w-1/2 md:h-96 h-64  hidden" autoplay muted></video>
-            <video id="remoteVideo" class="bg-black rounded-lg w-full md:w-1/2 md:h-96 h-64 hidden" autoplay></video>
-          </div>
-          <button id="end-call-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-200 mt-4">End Call</button>
+        <div id="video-call-section" class="hidden flex flex-col w-full items-center bg-gray-700 rounded-lg  ">
+          <div class="videoframe w-full ">
+            <video id="localVideo" class="smallframe  md:w-[200px] md:h-[230px]  rounded-lg" autoplay muted></video>
+            <video id="remoteVideo" class="largeframe   object-cover" autoplay></video>
+            
+         
+         <div class="video-control-btn flex items-center justify-center gap-2 w-full md:w-1/2 absolute bottom-1 left-1/2 -translate-x-1/2">
+          <button id="mute" class="p-3 px-4 rounded-full bg-gray-500 active:bg-gray-300 flex items-center justify-center transition duration-200"><i class="ri-volume-mute-fill"></i></button>
+          <button id="stop-video" class="p-3 px-4 rounded-full bg-gray-500 active:bg-gray-300 flex items-center justify-center transition duration-200"><i class="ri-video-off-fill"></i></button>
+          <button id="end-call-button" class="bg-red-600 hover:bg-red-700 text-white font-bold p-3 px-4 rounded-full transition duration-200 "><i class="ri-phone-fill"></i></button>
+         </div>
+        </div>
         </div>
       
         <!-- Chat Section -->
-        <div id="chat-section" class="flex-grow flex flex-col gap-4 mt-4">
+        <div id="chat-section" class=" flex-grow flex flex-col gap-4 mt-4">
           <div id="chat-box" class="h-96 overflow-y-auto bg-gray-700 p-4 rounded-lg flex flex-col gap-2">
             <h4 class="waiting_text text-center text-gray-300">Waiting for someone to join soon!</h4>
           </div>
@@ -75,9 +102,11 @@
         </div>
       
         <!-- Outgoing Call Notification -->
-        <div id="outgoing-call" class="hidden fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center p-4">
-          <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-            <h4 class="text-gray-800">Ringing...</h4>
+        <div id="outgoing-call" class="hidden fixed inset-0 bg-gray-800 bg-opacity-70 flex flex-col items-center justify-center p-4">
+          <div class="bg-white p-6 rounded-lg shadow-lg text-center relative">
+            <span id="close-ring-button" class="p-1 rounded-full text-black cursor-pointer  absolute top-1 right-1"> <i class="ri-close-line"></i> </span>
+
+            <h4 class="text-gray-800 mt-6">Ringing...</h4>
           </div>
         </div>
       

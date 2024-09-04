@@ -9,7 +9,12 @@
 
         socket.on('partnerjoined', (roomname) => {
             room = roomname;
-            document.querySelector(".waiting_text").classList.add('hidden')
+            document.querySelector(".waiting_text").classList.add('hidden');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('bg-gray-200', 'p-2', 'rounded', 'text-sm','text-black', 'self-center', 'w-fit');
+            messageElement.innerHTML = 'New Partner is join';
+            messageBox.appendChild(messageElement);
+            messageBox.scrollTop = messageBox.scrollHeight; 
 
         });
 
@@ -35,6 +40,14 @@
             messageBox.scrollTop = messageBox.scrollHeight; 
 
         });
+        socket.on('leave chat',(msg)=>{
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('bg-gray-200', 'p-2', 'text-sm','rounded', 'text-black', 'self-center', 'w-fit');
+            messageElement.innerHTML = msg;
+            messageBox.appendChild(messageElement);
+            messageBox.scrollTop = messageBox.scrollHeight; 
+
+        })
 
         //////////////////  WEBRTC START  //////////////////
 
@@ -109,7 +122,7 @@
 
             peerConnection.onicecandidate = (event) => {
                 if (event.candidate) {
-                    console.log("ICE candidate: ", event.candidate);
+                    // console.log("ICE candidate: ", event.candidate);
                     socket.emit('singlingMessage', {
                         room,
                         message: JSON.stringify({
@@ -122,7 +135,7 @@
             peerConnection.oniceconnectionstatechange = () => {
                 
                 if (peerConnection.iceConnectionState === "failed") {
-                    console.log("ICE connection failed");
+                    // console.log("ICE connection failed");
                     inCall = false;
                     socket.emit('leave');
                 }
@@ -167,7 +180,7 @@
         const handleAnswer = async (answer) => {
             try {
                 await peerConnection.setRemoteDescription(answer);
-                console.log("answer set");
+                // console.log("answer set");
             } catch (error) {
                 console.log('Failed to handle answer',error);
             }
@@ -187,7 +200,7 @@ const notify_text = document.getElementById('notify-text');
 
 videoBtn.addEventListener("click",()=>{
 socket.emit("startVideoChat",{room})
-document.getElementById('outgoing-call').classList.remove('hidden')
+document.getElementById('outgoing-call').classList.remove('hidden');
 
 })
 socket.on("incomingCall",()=>{
@@ -288,5 +301,42 @@ const notification = (msg)=>{
 
 }
 
+
+    const muteButton = document.getElementById('mute');
+    const stopVideoButton = document.getElementById('stop-video');
+    const videoElement = document.querySelector('#localVideo'); 
+    
+    let isMuted = false;
+    let isVideoStopped = false;
+  
+    // Function to mute/unmute the video
+    function toggleMute() {
+      if (videoElement.srcObject) {
+        videoElement.srcObject.getAudioTracks().forEach(track => {
+          track.enabled = !isMuted;
+        });
+        isMuted = !isMuted;
+        muteButton.innerHTML = isMuted ? '<i class="ri-volume-mute-fill"></i>' : '<i class="ri-volume-up-fill"></i>';
+        muteButton.classList.toggle('bg-gray-600')
+      }
+    }
+  
+    // Function to stop/start the video
+    function toggleVideo() {
+      if (videoElement.srcObject) {
+        videoElement.srcObject.getVideoTracks().forEach(track => {
+          track.enabled = !isVideoStopped;
+        });
+        isVideoStopped = !isVideoStopped;
+        stopVideoButton.innerHTML = isVideoStopped ? '<i class="ri-video-off-fill"></i>' : '<i class="ri-video-fill"></i>';
+        stopVideoButton.classList.toggle('bg-gray-600')
+      }
+    }
+  
+    muteButton.addEventListener('click', toggleMute);
+    stopVideoButton.addEventListener('click', toggleVideo);
+  
+
+  
 
    
